@@ -39,7 +39,7 @@ Communication is a fundamental human need and right. When someone loses their ab
 
 ## Getting Started
 
-For technical details and setup instructions, please see the [Application README](app/README.md) in the `app` directory.
+For technical details and setup instructions, please see the [Application README](voice-assistant/README.md) in the `app` directory.
 
 ## Our Vision
 
