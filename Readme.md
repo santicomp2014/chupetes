@@ -37,7 +37,7 @@ voice-assistant/
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/voice-assistant.git
+   git clone https://github.com/santicomp2014/chupetes.git
    cd voice-assistant
    ```
 
