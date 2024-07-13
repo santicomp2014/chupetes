@@ -3,6 +3,7 @@ import os
 from authlib.integrations.requests_client import OAuth2Session
 import requests
 from dotenv import load_dotenv
+
 load_dotenv()
 
 AUTH0_CLIENT_ID = os.getenv("AUTH0_CLIENT_ID")
@@ -24,21 +25,23 @@ def login(lang):
     st.session_state.oauth_state = state
     st.markdown(f'<a href="{uri}" target="_self">{lang["login_button"]}</a>', unsafe_allow_html=True)
 
-def callback():
+def handle_callback():
     client = OAuth2Session(AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET,
-                           state=st.session_state.oauth_state,
+                           state=st.session_state.get('oauth_state'),
                            redirect_uri=AUTH0_CALLBACK_URL)
-    token = client.fetch_token(f'https://{AUTH0_DOMAIN}/oauth/token',
-                               authorization_response=st.experimental_get_query_params())
-    set_token(token)
-    user_info = client.get(f'https://{AUTH0_DOMAIN}/userinfo').json()
-    st.session_state.user = user_info
-    return user_info
+    try:
+        token = client.fetch_token(f'https://{AUTH0_DOMAIN}/oauth/token',
+                                   authorization_response=st.experimental_get_query_params())
+        set_token(token)
+        user_info = client.get(f'https://{AUTH0_DOMAIN}/userinfo').json()
+        return user_info
+    except Exception as e:
+        st.error(f"An error occurred during authentication: {str(e)}")
+        return None
 
 def logout():
     st.session_state.user = None
     st.session_state.token = None
-    # Clear user settings on logout
     if 'user_settings' in st.session_state:
         del st.session_state.user_settings
 

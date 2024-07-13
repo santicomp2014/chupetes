@@ -1,7 +1,7 @@
 import streamlit as st
 from dotenv import load_dotenv
 import os
-from auth import login, logout, callback, get_user, is_authenticated
+from auth import login, logout, handle_callback, get_user, is_authenticated
 from tts import text_to_speech
 from ui import render_main_interface, render_sidebar
 from utils import load_language_config, load_user_settings, get_default_language
@@ -22,6 +22,18 @@ def main():
     # Load language configuration
     lang = load_language_config(st.session_state.language)
 
+    # Handle Auth0 callback
+    params = st.experimental_get_query_params()
+    if 'code' in params and 'state' in params:
+        user_info = handle_callback()
+        if user_info:
+            st.success("Login successful!")
+            st.session_state.user = user_info
+            st.experimental_rerun()
+        else:
+            st.error("Login failed. Please try again.")
+        return
+
     # Language selector (before login)
     if not is_authenticated():
         languages = ["Español","English"]  # Add more languages as needed
@@ -29,13 +41,6 @@ def main():
         if selected_lang != st.session_state.language:
             st.session_state.language = selected_lang
             st.experimental_rerun()
-
-    # Handle Auth0 callback
-    params = st.experimental_get_query_params()
-    if 'code' in params and 'state' in params:
-        callback()
-        st.experimental_set_query_params()
-        st.experimental_rerun()
 
     # Check authentication
     if not is_authenticated():
