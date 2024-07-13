@@ -14,13 +14,13 @@ def get_token():
 def set_token(token):
     st.session_state.token = token
 
-def login():
+def login(lang):
     client = OAuth2Session(AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET,
                            scope='openid profile email',
                            redirect_uri=AUTH0_CALLBACK_URL)
     uri, state = client.create_authorization_url(f'https://{AUTH0_DOMAIN}/authorize')
     st.session_state.oauth_state = state
-    st.markdown(f'<a href="{uri}" target="_self">Login</a>', unsafe_allow_html=True)
+    st.markdown(f'<a href="{uri}" target="_self">{lang["login_button"]}</a>', unsafe_allow_html=True)
 
 def callback():
     client = OAuth2Session(AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET,
