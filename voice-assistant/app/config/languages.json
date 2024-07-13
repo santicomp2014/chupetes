@@ -1,0 +1,26 @@
+{
+    "English": {
+      "title": "Voice Assistant",
+      "input_text": "Enter text to speak",
+      "speak_button": "Speak",
+      "voice_select": "Select Voice",
+      "voice_settings": "Voice Settings",
+      "stability": "Stability",
+      "similarity_boost": "Similarity Boost",
+      "show_history": "Show History",
+      "history": "Chat History",
+      "repeat": "Repeat"
+    },
+    "Español": {
+      "title": "Asistente de Voz",
+      "input_text": "Ingrese texto para hablar",
+      "speak_button": "Hablar",
+      "voice_select": "Seleccionar Voz",
+      "voice_settings": "Configuración de Voz",
+      "stability": "Estabilidad",
+      "similarity_boost": "Aumento de Similitud",
+      "show_history": "Mostrar Historial",
+      "history": "Historial de Chat",
+      "repeat": "Repetir"
+    }
+  }

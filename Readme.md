@@ -1,103 +1,56 @@
-# Voice Assistant for Text-to-Speech Communication
+# Chupetes Voice Assistant: Empowering Communication
 
-This project is an open-source Streamlit application designed to assist individuals with vocal impairments in communicating through text-to-speech technology. It's a tribute to a friend facing vocal cancer El Chupete, aiming to help them maintain their ability to communicate effectively.
+## Our Mission
 
-## Project Structure
+Chupetes Voice Assistant is an open-source project dedicated to giving a voice to those who have lost theirs. Born from a deeply personal mission to help a friend battling vocal cancer, this project aims to provide a tool that allows individuals with vocal impairments to communicate effectively and expressively.
 
-```
-voice-assistant/
-│
-├── app/
-│   ├── main.py
-│   ├── auth.py
-│   ├── tts.py
-│   ├── ui.py
-│   └── utils.py
-│
-├── config/
-│   └── languages.json
-│
-├── requirements.txt
-│
-└── README.md
-```
+## Why This Matters
 
-## Files Description
+Communication is a fundamental human need and right. When someone loses their ability to speak, it impacts not just their capacity to convey information, but also their ability to express emotions, maintain relationships, and participate fully in society. Voice Assistant seeks to bridge this gap, offering a way for individuals to continue expressing themselves in their own unique way.
 
-- `app/main.py`: The main Streamlit application entry point.
-- `app/auth.py`: Handles authentication using Auth0.
-- `app/tts.py`: Manages text-to-speech functionality using ElevenLabs API.
-- `app/ui.py`: Contains UI-related functions and layouts.
-- `app/utils.py`: Utility functions used across the application.
-- `config/languages.json`: Configuration file for multilingual support.
-- `requirements.txt`: List of Python dependencies.
-- `README.md`: This file, containing project information and setup instructions.
+## Our Impact
 
-## Setup and Installation
+- **Restoring Independence**: By providing a customizable text-to-speech solution, we help users regain control over their daily communications.
+- **Maintaining Identity**: Through advanced voice cloning technology (coming soon), users can communicate with a voice that sounds like their own, preserving a crucial part of their identity.
+- **Improving Quality of Life**: Effective communication tools can significantly enhance social interactions, professional engagement, and overall quality of life for individuals with vocal impairments.
+- **Supporting Families**: We provide a tool that not only helps individuals with vocal impairments but also supports their families and caregivers in maintaining meaningful connections.
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/santicomp2014/chupetes.git
-   cd voice-assistant
-   ```
+## Key Features
 
-2. Create a virtual environment and activate it:
-   ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-   ```
+1. **Text-to-Speech Conversion**: Transform written text into natural-sounding speech.
+2. **Multilingual Support**: Communicate in multiple languages to break down language barriers.
+3. **Customizable Voice Settings**: Adjust voice parameters to suit individual preferences.
+4. **User-Friendly Interface**: An intuitive, accessible design that works across devices.
+5. **Secure Authentication**: Protect user privacy and data with robust login mechanisms.
+6. **Chat History**: Save and replay previous messages for convenience.
 
-3. Install the required dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
+## Coming Soon
 
-4. Set up environment variables:
-   Create a `.env` file in the root directory with the following contents:
-   ```
-   AUTH0_CLIENT_ID=your_auth0_client_id
-   AUTH0_CLIENT_SECRET=your_auth0_client_secret
-   AUTH0_DOMAIN=your_auth0_domain
-   AUTH0_CALLBACK_URL=http://localhost:8501/callback
-   ELEVEN_LABS_API_KEY=your_elevenlabs_api_key
-   OPENAI_API_KEY=your_openai_api_key
-   ANTHROPIC_API_KEY=your_anthropic_api_key
-   ```
+- **Voice Cloning**: Use AI to recreate a user's original voice from existing recordings.
+- **Emotion Conveyance**: Express a range of emotions through speech to enable more nuanced communication.
+- **Integrations**: Connect with various platforms and devices for seamless use in different contexts.
 
-   Note: The API keys in the `.env` file will be used as default values. Users can override these in the application settings.
+## How You Can Help
 
-5. Run the Streamlit app:
-   ```
-   streamlit run app/main.py
-   ```
+1. **Contribute**: If you're a developer, designer, or have experience with accessibility tools, consider contributing to our open-source project.
+2. **Spread the Word**: Share this project with those who might benefit from it or know someone who could.
+3. **Provide Feedback**: If you use the tool, let us know your experience and how we can improve.
+4. **Support**: Consider supporting the project through donations or by offering your expertise.
 
-## Features
+## Getting Started
 
-- User authentication with Auth0
-- Text-to-speech functionality using ElevenLabs API
-- Multilingual support
-- Customizable voice settings
-- Chat history with replay function
-- Mobile-friendly UI
-- User-configurable API keys for ElevenLabs, OpenAI, and Anthropic
+For technical details and setup instructions, please see the [Application README](app/README.md) in the `app` directory.
 
-## Future Enhancements
+## Our Vision
 
-- Voice cloning from audio files
-- Integration with OpenAI or Anthropic for AI-assisted communication
-- Phrase bank for quick access to common expressions
-- Integration with alternative input methods
-- Emotion conveying in speech
-- Offline mode support
+We envision a world where losing one's voice doesn't mean losing one's ability to communicate effectively. Through technology and compassion, we believe we can make a significant difference in the lives of those facing communication challenges.
 
-## Contributing
+Join us in our mission to give voice to the voiceless and to ensure that everyone has the opportunity to be heard.
 
-We welcome contributions to this project. Please feel free to submit issues and pull requests.
+---
 
-## License
+"The voice is the most powerful tool we have. When we lose it, we lose a part of ourselves. This project is about giving that part back." - Project Founder
 
-This project is open-source and available under the [MIT License](https://opensource.org/licenses/MIT).
+---
 
-## Acknowledgements
-
-This project is dedicated to our friend and all individuals facing challenges with vocal communication. Your strength and resilience inspire us.
+For more information, collaboration inquiries, or support, please [contact us](mailto:your-email@example.com).
