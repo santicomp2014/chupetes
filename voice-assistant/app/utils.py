@@ -1,6 +1,8 @@
 import json
 import os
 import streamlit as st
+from dotenv import load_dotenv
+load_dotenv()
 
 def load_language_config(language):
     config_path = os.path.join('config', 'languages.json')

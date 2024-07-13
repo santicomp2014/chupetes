@@ -2,6 +2,8 @@ import streamlit as st
 import os
 from authlib.integrations.requests_client import OAuth2Session
 import requests
+from dotenv import load_dotenv
+load_dotenv()
 
 AUTH0_CLIENT_ID = os.getenv("AUTH0_CLIENT_ID")
 AUTH0_CLIENT_SECRET = os.getenv("AUTH0_CLIENT_SECRET")
