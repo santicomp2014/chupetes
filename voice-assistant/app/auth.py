@@ -10,6 +10,7 @@ AUTH0_CLIENT_ID = os.getenv("AUTH0_CLIENT_ID")
 AUTH0_CLIENT_SECRET = os.getenv("AUTH0_CLIENT_SECRET")
 AUTH0_DOMAIN = os.getenv("AUTH0_DOMAIN")
 AUTH0_CALLBACK_URL = os.getenv("AUTH0_CALLBACK_URL")
+AUTH0_AUDIENCE = os.getenv("AUTH0_AUDIENCE", f"https://{AUTH0_DOMAIN}/userinfo")
 
 def get_token():
     return st.session_state.get('token')
@@ -21,7 +22,10 @@ def login(lang):
     client = OAuth2Session(AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET,
                            scope='openid profile email',
                            redirect_uri=AUTH0_CALLBACK_URL)
-    uri, state = client.create_authorization_url(f'https://{AUTH0_DOMAIN}/authorize')
+    uri, state = client.create_authorization_url(
+        f'https://{AUTH0_DOMAIN}/authorize',
+        audience=AUTH0_AUDIENCE
+    )
     st.session_state.oauth_state = state
     st.markdown(f'<a href="{uri}" target="_self">{lang["login_button"]}</a>', unsafe_allow_html=True)
 
@@ -30,8 +34,11 @@ def handle_callback():
                            state=st.session_state.get('oauth_state'),
                            redirect_uri=AUTH0_CALLBACK_URL)
     try:
-        token = client.fetch_token(f'https://{AUTH0_DOMAIN}/oauth/token',
-                                   authorization_response=st.experimental_get_query_params())
+        token = client.fetch_token(
+            f'https://{AUTH0_DOMAIN}/oauth/token',
+            authorization_response=st.experimental_get_query_params(),
+            audience=AUTH0_AUDIENCE
+        )
         set_token(token)
         user_info = client.get(f'https://{AUTH0_DOMAIN}/userinfo').json()
         return user_info
