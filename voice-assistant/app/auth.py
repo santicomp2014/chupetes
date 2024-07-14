@@ -10,7 +10,7 @@ AUTH0_CLIENT_ID = os.getenv("AUTH0_CLIENT_ID")
 AUTH0_CLIENT_SECRET = os.getenv("AUTH0_CLIENT_SECRET")
 AUTH0_DOMAIN = os.getenv("AUTH0_DOMAIN")
 AUTH0_CALLBACK_URL = os.getenv("AUTH0_CALLBACK_URL")
-AUTH0_AUDIENCE = os.getenv("AUTH0_AUDIENCE", f"https://{AUTH0_DOMAIN}/userinfo")
+AUTH0_AUDIENCE = f"https://{AUTH0_DOMAIN}/api/v2/userinfo"
 
 def get_token():
     return st.session_state.get('token')
@@ -40,7 +40,9 @@ def handle_callback():
             audience=AUTH0_AUDIENCE
         )
         set_token(token)
-        user_info = client.get(f'https://{AUTH0_DOMAIN}/userinfo').json()
+        user_info = requests.get(f'https://{AUTH0_DOMAIN}/userinfo', headers={
+            'Authorization': f'Bearer {token["access_token"]}'
+        }).json()
         return user_info
     except Exception as e:
         st.error(f"An error occurred during authentication: {str(e)}")
