@@ -30,13 +30,14 @@ def render_sidebar(user, lang):
     # Voice settings
     st.sidebar.subheader(lang["voice_settings"])
     stability = st.sidebar.slider(lang["stability"], 0.0, 1.0, 0.8)
-    similarity_boost = st.sidebar.slider(lang["similarity_boost"], 0.0, 1.0, 1.0)
+    similarity_boost = st.sidebar.slider(lang["similarity_boost"], 0.0, 1.0, 1.0)   
+    speaker_boost = st.sidebar.checkbox(lang["speaker_boost"])
 
     # API Settings
     if st.sidebar.checkbox(lang["show_api_settings"]):
         render_api_settings(lang)
 
-    return selected_voice_id, stability, similarity_boost
+    return selected_voice_id, stability, similarity_boost, speaker_boost
 
 def render_api_settings(lang):
     st.sidebar.subheader(lang["api_settings"])

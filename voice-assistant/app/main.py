@@ -1,7 +1,7 @@
 import streamlit as st
 from dotenv import load_dotenv
 import os
-from auth import logout, get_user, is_authenticated
+from auth import logout, get_user, is_authenticated, save_session_settings
 from tts import text_to_speech
 from ui import render_main_interface, render_sidebar
 from utils import load_language_config, load_user_settings, get_default_language
@@ -34,18 +34,21 @@ def main():
 
     # User is authenticated
     user = get_user()
-    user_settings = load_user_settings()
 
-    selected_voice, stability, similarity_boost = render_sidebar(user, lang)
+    selected_voice, stability, similarity_boost, speaker_boost = render_sidebar(user, lang)
     
     # Update session state with current settings
     st.session_state.update({
         'selected_voice': selected_voice,
         'stability': stability,
-        'similarity_boost': similarity_boost
+        'similarity_boost': similarity_boost,
+        'speaker_boost': speaker_boost
     })
 
-    render_main_interface(lang, user_settings)
+    # Save session settings to user data
+    save_session_settings()
+
+    render_main_interface(lang, st.session_state)
 
     # You can add more components or features here in the future
 
