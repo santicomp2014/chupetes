@@ -25,6 +25,6 @@ def save_user_settings(settings):
 def get_default_language():
     # You can implement logic here to determine the default language
     # For now, we'll just return 'English'
-    return 'Spanish'
+    return 'Español'
 
 # Add more utility functions as needed

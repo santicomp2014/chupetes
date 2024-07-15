@@ -1,61 +1,48 @@
 import streamlit as st
-import os
-from authlib.integrations.requests_client import OAuth2Session
-import requests
-from dotenv import load_dotenv
+import hashlib
 
-load_dotenv()
+# Hardcoded user data (for demonstration purposes only)
+USERS = {
+    "santi": {
+        "password": hashlib.sha256("test".encode()).hexdigest(),
+        "user_id": "001",
+        "name": "Santiago",
+        "lastname": "Regusci",
+        "email": "santi.doe@gmail.com"
+    },
+    "chupete": {
+        "password": hashlib.sha256("chupete".encode()).hexdigest(),
+        "user_id": "002",
+        "name": "Chupete",
+        "lastname": "Chupete",
+        "email": "chupete@gmail.com"
+    }
+}
 
-AUTH0_CLIENT_ID = os.getenv("AUTH0_CLIENT_ID")
-AUTH0_CLIENT_SECRET = os.getenv("AUTH0_CLIENT_SECRET")
-AUTH0_DOMAIN = os.getenv("AUTH0_DOMAIN")
-AUTH0_CALLBACK_URL = os.getenv("AUTH0_CALLBACK_URL")
-AUTH0_AUDIENCE = f"https://{AUTH0_DOMAIN}/api/v2/"
+def get_user():
+    user = st.session_state.get('user')
+    if user:
+        return {
+            "username": user,
+            "user_id": USERS[user]["user_id"],
+            "name": USERS[user]["name"],
+            "lastname": USERS[user]["lastname"],
+            "email": USERS[user]["email"]
+        }
+    return None
 
-def get_token():
-    return st.session_state.get('token')
+def is_authenticated():
+    return st.session_state.get('authenticated', False)
 
-def set_token(token):
-    st.session_state.token = token
-
-def login(lang):
-    client = OAuth2Session(AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET,
-                           scope='openid profile email',
-                           redirect_uri=AUTH0_CALLBACK_URL)
-    uri, state = client.create_authorization_url(
-        f'https://{AUTH0_DOMAIN}/authorize',
-        audience=AUTH0_AUDIENCE
-    )
-    st.session_state.oauth_state = state
-    st.markdown(f'<a href="{uri}" target="_self">{lang["login_button"]}</a>', unsafe_allow_html=True)
-
-def handle_callback():
-    client = OAuth2Session(AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET,
-                           state=st.session_state.get('oauth_state'),
-                           redirect_uri=AUTH0_CALLBACK_URL)
-    try:
-        token = client.fetch_token(
-            f'https://{AUTH0_DOMAIN}/oauth/token',
-            authorization_response=st.experimental_get_query_params(),
-            audience=AUTH0_AUDIENCE
-        )
-        set_token(token)
-        user_info = requests.get(f'https://{AUTH0_DOMAIN}/userinfo', headers={
-            'Authorization': f'Bearer {token["access_token"]}'
-        }).json()
-        return user_info
-    except Exception as e:
-        st.error(f"An error occurred during authentication: {str(e)}")
-        return None
+def login(username, password):
+    if username in USERS and USERS[username]["password"] == hashlib.sha256(password.encode()).hexdigest():
+        st.session_state.user = username
+        st.session_state.authenticated = True
+        return True
+    return False
 
 def logout():
     st.session_state.user = None
-    st.session_state.token = None
+    st.session_state.authenticated = False
     if 'user_settings' in st.session_state:
         del st.session_state.user_settings
-
-def get_user():
-    return st.session_state.user
-
-def is_authenticated():
-    return st.session_state.user is not None

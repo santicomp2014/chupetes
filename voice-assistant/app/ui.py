@@ -4,15 +4,15 @@ from auth import logout
 from utils import load_user_settings, save_user_settings
 
 def render_sidebar(user, lang):
-    st.sidebar.title(f"Welcome, {user['name']}!")
-    if st.sidebar.button("Logout"):
+    st.sidebar.title(f"{lang['welcome']}, {user['name']}!")
+    if st.sidebar.button(lang["logout_button"]):
         logout()
         st.experimental_rerun()
 
     # Language selection
     languages = ["English", "Español"]  # Add more languages as needed
-    selected_lang = st.sidebar.selectbox("Select Language", languages)
-    if selected_lang != st.session_state.get('language'):
+    selected_lang = st.sidebar.selectbox(lang["language_select"], languages, index=languages.index(st.session_state.language))
+    if selected_lang != st.session_state.language:
         st.session_state.language = selected_lang
         st.experimental_rerun()
 
@@ -26,35 +26,34 @@ def render_sidebar(user, lang):
     similarity_boost = st.sidebar.slider(lang["similarity_boost"], 0.0, 1.0, 0.5)
 
     # API Settings
-    if st.sidebar.checkbox("Show API Settings"):
-        render_api_settings()
+    if st.sidebar.checkbox(lang["show_api_settings"]):
+        render_api_settings(lang)
 
     return selected_voice, stability, similarity_boost
 
-def render_api_settings():
-    st.sidebar.subheader("API Settings")
+def render_api_settings(lang):
+    st.sidebar.subheader(lang["api_settings"])
     settings = load_user_settings()
     
     new_settings = {}
-    new_settings['elevenlabs_api_key'] = st.sidebar.text_input("ElevenLabs API Key", value=settings['elevenlabs_api_key'], type="password")
-    new_settings['openai_api_key'] = st.sidebar.text_input("OpenAI API Key", value=settings['openai_api_key'], type="password")
-    new_settings['anthropic_api_key'] = st.sidebar.text_input("Anthropic API Key", value=settings['anthropic_api_key'], type="password")
+    new_settings['elevenlabs_api_key'] = st.sidebar.text_input(lang["elevenlabs_api_key"], value=settings['elevenlabs_api_key'], type="password")
+    new_settings['openai_api_key'] = st.sidebar.text_input(lang["openai_api_key"], value=settings['openai_api_key'], type="password")
+    new_settings['anthropic_api_key'] = st.sidebar.text_input(lang["anthropic_api_key"], value=settings['anthropic_api_key'], type="password")
 
-    if st.sidebar.button("Save API Settings"):
+    if st.sidebar.button(lang["save_api_settings"]):
         save_user_settings(new_settings)
-        st.sidebar.success("API settings saved successfully!")
+        st.sidebar.success(lang["api_settings_saved"])
 
-def render_main_interface(lang):
+def render_main_interface(lang, user_settings):
     st.title(lang["title"])
     user_input = st.text_area(lang["input_text"])
 
     if st.button(lang["speak_button"]):
         if user_input:
-            settings = load_user_settings()
             audio = text_to_speech(user_input, st.session_state.get('selected_voice'), {
                 "stability": st.session_state.get('stability'),
                 "similarity_boost": st.session_state.get('similarity_boost'),
-                "api_key": settings['elevenlabs_api_key']
+                "api_key": user_settings['elevenlabs_api_key']
             })
             st.audio(audio, format="audio/mp3")
             
@@ -69,10 +68,9 @@ def render_main_interface(lang):
         for item in st.session_state.get('history', []):
             st.write(item)
             if st.button(f"{lang['repeat']} '{item[:20]}...'"):
-                settings = load_user_settings()
                 audio = text_to_speech(item, st.session_state.get('selected_voice'), {
                     "stability": st.session_state.get('stability'),
                     "similarity_boost": st.session_state.get('similarity_boost'),
-                    "api_key": settings['elevenlabs_api_key']
+                    "api_key": user_settings['elevenlabs_api_key']
                 })
                 st.audio(audio, format="audio/mp3")

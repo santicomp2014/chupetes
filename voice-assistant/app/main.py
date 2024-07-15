@@ -1,10 +1,11 @@
 import streamlit as st
 from dotenv import load_dotenv
 import os
-from auth import login, logout, handle_callback, get_user, is_authenticated
+from auth import logout, get_user, is_authenticated
 from tts import text_to_speech
 from ui import render_main_interface, render_sidebar
 from utils import load_language_config, load_user_settings, get_default_language
+from signin import render_signin_page
 
 # Load environment variables
 load_dotenv()
@@ -17,38 +18,18 @@ if 'language' not in st.session_state:
     st.session_state.language = get_default_language()
 
 def main():
-    st.set_page_config(page_title="Voice Assistant", layout="wide")
+    st.set_page_config(page_title="Chupetes Voice Assistant", layout="wide")
+
+    # Ensure language is always a string (in case it's not set properly)
+    if not isinstance(st.session_state.language, str):
+        st.session_state.language = get_default_language()
 
     # Load language configuration
     lang = load_language_config(st.session_state.language)
 
-    # Handle Auth0 callback
-    params = st.experimental_get_query_params()
-    if 'code' in params and 'state' in params:
-        with st.spinner("Authenticating..."):
-            user_info = handle_callback()
-            if user_info:
-                st.success("Authentication successful!")
-                st.session_state.user = user_info
-                st.experimental_set_query_params()
-                st.experimental_rerun()
-            else:
-                st.error("Authentication failed. Please try again.")
-                st.experimental_set_query_params()
-        return
-
-    # Language selector (before login)
-    if not is_authenticated():
-        languages = ["Español","English"]  # Add more languages as needed
-        selected_lang = st.selectbox("Seleccione el idioma/ Select Language", languages)
-        if selected_lang != st.session_state.language:
-            st.session_state.language = selected_lang
-            st.experimental_rerun()
-
     # Check authentication
     if not is_authenticated():
-        st.title(lang["welcome_title"])
-        login(lang)
+        render_signin_page(lang)
         return
 
     # User is authenticated
