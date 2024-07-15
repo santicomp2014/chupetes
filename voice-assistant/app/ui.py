@@ -1,5 +1,5 @@
 import streamlit as st
-from tts import text_to_speech
+from tts import text_to_speech, get_available_voices
 from auth import logout
 from utils import load_user_settings, save_user_settings
 
@@ -16,20 +16,27 @@ def render_sidebar(user, lang):
         st.session_state.language = selected_lang
         st.experimental_rerun()
 
-    # Voice selection (you'd need to implement this based on ElevenLabs API)
-    voices = ["voice1", "voice2", "voice3"]  # Replace with actual voice IDs
-    selected_voice = st.sidebar.selectbox(lang["voice_select"], voices)
+    # Voice selection
+    user_settings = load_user_settings()
+    try:
+        available_voices = get_available_voices(user_settings['elevenlabs_api_key'], lang)
+        voice_options = [f"{name} ({voice_id})" for voice_id, name in available_voices]
+        selected_voice = st.sidebar.selectbox(lang["voice_select"], voice_options)
+        selected_voice_id = selected_voice.split('(')[-1].split(')')[0]
+    except ValueError as e:
+        st.sidebar.error(str(e))
+        selected_voice_id = None
 
     # Voice settings
     st.sidebar.subheader(lang["voice_settings"])
-    stability = st.sidebar.slider(lang["stability"], 0.0, 1.0, 0.5)
-    similarity_boost = st.sidebar.slider(lang["similarity_boost"], 0.0, 1.0, 0.5)
+    stability = st.sidebar.slider(lang["stability"], 0.0, 1.0, 0.8)
+    similarity_boost = st.sidebar.slider(lang["similarity_boost"], 0.0, 1.0, 1.0)
 
     # API Settings
     if st.sidebar.checkbox(lang["show_api_settings"]):
         render_api_settings(lang)
 
-    return selected_voice, stability, similarity_boost
+    return selected_voice_id, stability, similarity_boost
 
 def render_api_settings(lang):
     st.sidebar.subheader(lang["api_settings"])

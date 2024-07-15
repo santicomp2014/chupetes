@@ -1,5 +1,13 @@
-from elevenlabs import generate, set_api_key, Voice
+from elevenlabs import generate, set_api_key, Voice, voices
 from elevenlabs.api import APIError
+
+def get_available_voices(api_key, lang):
+    set_api_key(api_key)
+    try:
+        available_voices = voices()
+        return [(voice.voice_id, voice.name) for voice in available_voices]
+    except APIError as e:
+        raise ValueError(f"{lang['error_fetching_voices']}: {str(e)}")
 
 def text_to_speech(text, voice_id, settings, lang):
     api_key = settings.get('api_key')
@@ -24,7 +32,7 @@ def text_to_speech(text, voice_id, settings, lang):
         audio = generate(
             text=text,
             voice=voice,
-            model="eleven_multilingual_v1"
+            model="eleven_multilingual_v2"
         )
         return audio
     except APIError as e:
@@ -32,5 +40,3 @@ def text_to_speech(text, voice_id, settings, lang):
             raise ValueError(lang["error_invalid_api_key"])
         else:
             raise ValueError(f"{lang['error_api']}: {str(e)}")
-
-# You can add more TTS-related functions here as needed

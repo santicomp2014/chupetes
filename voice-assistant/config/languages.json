@@ -31,7 +31,8 @@
     "error_api_key_not_set": "ElevenLabs API key is not set. Please set it in the API Settings.",
     "error_invalid_api_key": "Invalid ElevenLabs API key. Please check your API key in the API Settings.",
     "error_api": "An API error occurred",
-    "error_unexpected": "An unexpected error occurred"
+    "error_unexpected": "An unexpected error occurred",
+    "error_fetching_voices": "Error fetching voices"
   },
   "Español": {
     "welcome_title": "Bienvenido al Asistente de Voz Chupetes",
@@ -65,6 +66,7 @@
     "error_api_key_not_set": "La clave API de ElevenLabs no está configurada. Por favor, configúrela en los Ajustes de API.",
     "error_invalid_api_key": "Clave API de ElevenLabs inválida. Por favor, verifique su clave API en los Ajustes de API.",
     "error_api": "Ocurrió un error de API",
-    "error_unexpected": "Ocurrió un error inesperado"
+    "error_unexpected": "Ocurrió un error inesperado",
+    "error_fetching_voices": "Error al obtener las voces"
   }
 }

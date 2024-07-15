@@ -8,7 +8,7 @@ USERS = {
         "user_id": "001",
         "name": "Santiago",
         "lastname": "Regusci",
-        "email": "santi.doe@gmail.com"
+        "email": "santi.doe@gmail.com",
     },
     "chupete": {
         "password": hashlib.sha256("chupete".encode()).hexdigest(),
