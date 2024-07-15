@@ -11,6 +11,7 @@
     "voice_settings": "Voice Settings",
     "stability": "Stability",
     "similarity_boost": "Similarity Boost",
+    "speaker_boost": "Speaker Boost",
     "show_history": "Show History",
     "history": "Chat History",
     "repeat": "Repeat",
@@ -32,7 +33,8 @@
     "error_invalid_api_key": "Invalid ElevenLabs API key. Please check your API key in the API Settings.",
     "error_api": "An API error occurred",
     "error_unexpected": "An unexpected error occurred",
-    "error_fetching_voices": "Error fetching voices"
+    "error_fetching_voices": "Error fetching voices",
+    "unknown_voice": "Unknown Voice"
   },
   "Español": {
     "welcome_title": "Bienvenido al Asistente de Voz Chupetes",
@@ -46,6 +48,7 @@
     "voice_settings": "Configuración de Voz",
     "stability": "Estabilidad",
     "similarity_boost": "Aumento de Similitud",
+    "speaker_boost": "Aumento de Orador",
     "show_history": "Mostrar Historial",
     "history": "Historial de Chat",
     "repeat": "Repetir",
@@ -67,6 +70,7 @@
     "error_invalid_api_key": "Clave API de ElevenLabs inválida. Por favor, verifique su clave API en los Ajustes de API.",
     "error_api": "Ocurrió un error de API",
     "error_unexpected": "Ocurrió un error inesperado",
-    "error_fetching_voices": "Error al obtener las voces"
+    "error_fetching_voices": "Error al obtener las voces",
+    "unknown_voice": "Voz Desconocida"
   }
 }

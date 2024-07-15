@@ -1,7 +1,13 @@
 import streamlit as st
 from tts import text_to_speech, get_available_voices
-from auth import logout
+from auth import logout, update_user_settings
 from utils import load_user_settings, save_user_settings
+
+def get_voice_name(voice_id, available_voices, lang):
+    for vid, name in available_voices:
+        if vid == voice_id:
+            return name
+    return lang["unknown_voice"]
 
 def render_sidebar(user, lang):
     st.sidebar.title(f"{lang['welcome']}, {user['name']}!")
@@ -21,7 +27,10 @@ def render_sidebar(user, lang):
     try:
         available_voices = get_available_voices(user_settings['elevenlabs_api_key'], lang)
         voice_options = [f"{name} ({voice_id})" for voice_id, name in available_voices]
-        selected_voice = st.sidebar.selectbox(lang["voice_select"], voice_options)
+        current_voice = st.session_state.get('selected_voice')
+        current_voice_name = get_voice_name(current_voice, available_voices, lang) if current_voice else ""
+        current_voice_option = f"{current_voice_name} ({current_voice})" if current_voice else voice_options[0]
+        selected_voice = st.sidebar.selectbox(lang["voice_select"], voice_options, index=voice_options.index(current_voice_option) if current_voice else 0)
         selected_voice_id = selected_voice.split('(')[-1].split(')')[0]
     except ValueError as e:
         st.sidebar.error(str(e))
@@ -29,9 +38,9 @@ def render_sidebar(user, lang):
 
     # Voice settings
     st.sidebar.subheader(lang["voice_settings"])
-    stability = st.sidebar.slider(lang["stability"], 0.0, 1.0, 0.8)
-    similarity_boost = st.sidebar.slider(lang["similarity_boost"], 0.0, 1.0, 1.0)   
-    speaker_boost = st.sidebar.checkbox(lang["speaker_boost"])
+    stability = st.sidebar.slider(lang["stability"], 0.0, 1.0, st.session_state.get('stability', 0.8))
+    similarity_boost = st.sidebar.slider(lang["similarity_boost"], 0.0, 1.0, st.session_state.get('similarity_boost', 1.0))
+    speaker_boost = st.sidebar.checkbox(lang["speaker_boost"], value=st.session_state.get('speaker_boost', False))
 
     # API Settings
     if st.sidebar.checkbox(lang["show_api_settings"]):
@@ -62,6 +71,7 @@ def render_main_interface(lang, user_settings):
                 audio = text_to_speech(user_input, st.session_state.get('selected_voice'), {
                     "stability": st.session_state.get('stability'),
                     "similarity_boost": st.session_state.get('similarity_boost'),
+                    "speaker_boost": st.session_state.get('speaker_boost', False),
                     "api_key": user_settings['elevenlabs_api_key']
                 }, lang)
                 st.audio(audio, format="audio/mp3")
@@ -85,6 +95,7 @@ def render_main_interface(lang, user_settings):
                     audio = text_to_speech(item, st.session_state.get('selected_voice'), {
                         "stability": st.session_state.get('stability'),
                         "similarity_boost": st.session_state.get('similarity_boost'),
+                        "speaker_boost": st.session_state.get('speaker_boost', False),
                         "api_key": user_settings['elevenlabs_api_key']
                     }, lang)
                     st.audio(audio, format="audio/mp3")
