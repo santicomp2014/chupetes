@@ -27,7 +27,11 @@
     "openai_api_key": "OpenAI API Key",
     "anthropic_api_key": "Anthropic API Key",
     "save_api_settings": "Save API Settings",
-    "api_settings_saved": "API settings saved successfully!"
+    "api_settings_saved": "API settings saved successfully!",
+    "error_api_key_not_set": "ElevenLabs API key is not set. Please set it in the API Settings.",
+    "error_invalid_api_key": "Invalid ElevenLabs API key. Please check your API key in the API Settings.",
+    "error_api": "An API error occurred",
+    "error_unexpected": "An unexpected error occurred"
   },
   "Español": {
     "welcome_title": "Bienvenido al Asistente de Voz Chupetes",
@@ -57,6 +61,10 @@
     "openai_api_key": "Clave API de OpenAI",
     "anthropic_api_key": "Clave API de Anthropic",
     "save_api_settings": "Guardar Configuración de API",
-    "api_settings_saved": "¡Configuración de API guardada exitosamente!"
+    "api_settings_saved": "¡Configuración de API guardada exitosamente!",
+    "error_api_key_not_set": "La clave API de ElevenLabs no está configurada. Por favor, configúrela en los Ajustes de API.",
+    "error_invalid_api_key": "Clave API de ElevenLabs inválida. Por favor, verifique su clave API en los Ajustes de API.",
+    "error_api": "Ocurrió un error de API",
+    "error_unexpected": "Ocurrió un error inesperado"
   }
 }

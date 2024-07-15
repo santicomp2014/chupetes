@@ -50,17 +50,22 @@ def render_main_interface(lang, user_settings):
 
     if st.button(lang["speak_button"]):
         if user_input:
-            audio = text_to_speech(user_input, st.session_state.get('selected_voice'), {
-                "stability": st.session_state.get('stability'),
-                "similarity_boost": st.session_state.get('similarity_boost'),
-                "api_key": user_settings['elevenlabs_api_key']
-            })
-            st.audio(audio, format="audio/mp3")
-            
-            # Add to chat history
-            if 'history' not in st.session_state:
-                st.session_state.history = []
-            st.session_state.history.append(user_input)
+            try:
+                audio = text_to_speech(user_input, st.session_state.get('selected_voice'), {
+                    "stability": st.session_state.get('stability'),
+                    "similarity_boost": st.session_state.get('similarity_boost'),
+                    "api_key": user_settings['elevenlabs_api_key']
+                }, lang)
+                st.audio(audio, format="audio/mp3")
+                
+                # Add to chat history
+                if 'history' not in st.session_state:
+                    st.session_state.history = []
+                st.session_state.history.append(user_input)
+            except ValueError as e:
+                st.error(str(e))
+            except Exception as e:
+                st.error(f"{lang['error_unexpected']}: {str(e)}")
 
     # Display chat history
     if st.sidebar.checkbox(lang["show_history"]):
@@ -68,9 +73,14 @@ def render_main_interface(lang, user_settings):
         for item in st.session_state.get('history', []):
             st.write(item)
             if st.button(f"{lang['repeat']} '{item[:20]}...'"):
-                audio = text_to_speech(item, st.session_state.get('selected_voice'), {
-                    "stability": st.session_state.get('stability'),
-                    "similarity_boost": st.session_state.get('similarity_boost'),
-                    "api_key": user_settings['elevenlabs_api_key']
-                })
-                st.audio(audio, format="audio/mp3")
+                try:
+                    audio = text_to_speech(item, st.session_state.get('selected_voice'), {
+                        "stability": st.session_state.get('stability'),
+                        "similarity_boost": st.session_state.get('similarity_boost'),
+                        "api_key": user_settings['elevenlabs_api_key']
+                    }, lang)
+                    st.audio(audio, format="audio/mp3")
+                except ValueError as e:
+                    st.error(str(e))
+                except Exception as e:
+                    st.error(f"{lang['error_unexpected']}: {str(e)}")
